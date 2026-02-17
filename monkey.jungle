@@ -1,0 +1,3 @@
+project.manifest = manifest.xml
+base.sourcePath = source;source/data;source/data/models;source/data/providers;source/ui;source/background;source/utils
+base.resourcePath = resources;resources/strings;resources/drawables;resources/layouts;resources/settings;resources/properties

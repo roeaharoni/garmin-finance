@@ -1,0 +1,14 @@
+# Build artifacts
+bin/
+
+# VS Code
+.vscode/
+
+# Garmin Connect IQ generated
+gen/
+
+# Claude Code
+.claude/
+
+# OS files
+.DS_Store

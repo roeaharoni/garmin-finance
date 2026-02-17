@@ -1,0 +1,6 @@
+<properties>
+    <property id="dataProvider" type="number">0</property>
+    <property id="apiKey" type="string"></property>
+    <property id="symbols" type="string">USD/EUR,BTC/USD,SPY</property>
+    <property id="refreshInterval" type="number">1</property>
+</properties>

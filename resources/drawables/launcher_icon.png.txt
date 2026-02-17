@@ -1,0 +1,6 @@
+NOTE: A launcher icon image (80x80 PNG) needs to be created.
+For now, you can:
+1. Create a simple icon in any image editor
+2. Save it as launcher_icon.png in resources/drawables/
+3. Recommended size: 80x80 pixels
+4. Should represent finance/money (dollar sign, chart, etc.)

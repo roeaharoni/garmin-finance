@@ -1,0 +1,16 @@
+<strings>
+    <string id="AppName">Finance Tracker</string>
+    <string id="GlanceName">Finance</string>
+    <string id="Loading">Loading...</string>
+    <string id="NoData">No data available</string>
+    <string id="Error">Error fetching data</string>
+    <string id="LastUpdated">Updated</string>
+    <string id="Refresh">Pull to refresh</string>
+    <string id="Configure">Configure in Garmin Connect</string>
+
+    <!-- Settings strings -->
+    <string id="DataProvider">Data Provider</string>
+    <string id="ApiKey">API Key</string>
+    <string id="Symbols">Symbols (comma-separated)</string>
+    <string id="RefreshInterval">Refresh Interval (minutes)</string>
+</strings>

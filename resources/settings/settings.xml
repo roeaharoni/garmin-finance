@@ -1,0 +1,26 @@
+<settings>
+    <setting propertyKey="@Properties.dataProvider" title="@Strings.DataProvider">
+        <settingConfig type="list">
+            <listEntry value="0">Twelve Data</listEntry>
+            <listEntry value="1">Alpha Vantage</listEntry>
+            <listEntry value="2">Yahoo Finance</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.apiKey" title="@Strings.ApiKey">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.symbols" title="@Strings.Symbols">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.refreshInterval" title="@Strings.RefreshInterval">
+        <settingConfig type="list">
+            <listEntry value="0">5 minutes</listEntry>
+            <listEntry value="1">15 minutes</listEntry>
+            <listEntry value="2">30 minutes</listEntry>
+            <listEntry value="3">1 hour</listEntry>
+        </settingConfig>
+    </setting>
+</settings>
