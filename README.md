@@ -52,7 +52,7 @@ The app uses a pluggable provider architecture. See [ARCHITECTURE.md](ARCHITECTU
 ### Build via Command Line
 
 ```bash
-monkeyc -d fenix7s -f monkey.jungle -o bin/FinanceTracker.prg -y <developer_key>
+monkeyc -d fenix7spro -f monkey.jungle -o bin/FinanceTracker.prg -y <developer_key>
 ```
 
 ### Build in VS Code
@@ -65,7 +65,7 @@ monkeyc -d fenix7s -f monkey.jungle -o bin/FinanceTracker.prg -y <developer_key>
 ### Run in Simulator
 
 ```bash
-monkeydo bin/FinanceTracker.prg fenix7s
+monkeydo bin/FinanceTracker.prg fenix7spro
 ```
 
 Or press `F5` in VS Code and select "Run with Simulator".
@@ -178,4 +178,4 @@ This project is provided as-is for educational and personal use.
 ## Credits
 
 Built for Garmin Connect IQ SDK 8.4.1
-Target Device: Fenix 7S (universal compatibility)
+Target Device: Fenix 7S Pro

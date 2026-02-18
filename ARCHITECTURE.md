@@ -251,7 +251,7 @@ Symbol format is passed directly to the provider. Yahoo Finance internally conve
 ## Build
 
 ```bash
-monkeyc -d fenix7s -f monkey.jungle -o bin/FinanceTracker.prg -y <developer_key>
+monkeyc -d fenix7spro -f monkey.jungle -o bin/FinanceTracker.prg -y <developer_key>
 ```
 
 Target device can be changed (e.g., `venu2`, `fr965`). See `manifest.xml` for supported devices.
