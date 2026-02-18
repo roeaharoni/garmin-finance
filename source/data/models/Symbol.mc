@@ -1,4 +1,5 @@
 using Toybox.Lang;
+using Toybox.Time;
 
 class FinanceSymbol {
     private var _name as Lang.String;
@@ -8,6 +9,16 @@ class FinanceSymbol {
     private var _lastUpdated as Lang.Number?;
     private var _error as Lang.Boolean = false;
 
+    // OHLC data
+    private var _open as Lang.Float?;
+    private var _high as Lang.Float?;
+    private var _low as Lang.Float?;
+    private var _previousClose as Lang.Float?;
+
+    // 52-week data
+    private var _fiftyTwoWeekHigh as Lang.Float?;
+    private var _fiftyTwoWeekLow as Lang.Float?;
+
     function initialize(name as Lang.String) {
         _name = name;
         _value = null;
@@ -15,6 +26,12 @@ class FinanceSymbol {
         _changePercent = null;
         _lastUpdated = null;
         _error = false;
+        _open = null;
+        _high = null;
+        _low = null;
+        _previousClose = null;
+        _fiftyTwoWeekHigh = null;
+        _fiftyTwoWeekLow = null;
     }
 
     function getName() as Lang.String {
@@ -51,6 +68,54 @@ class FinanceSymbol {
 
     function setLastUpdated(timestamp as Lang.Number?) as Void {
         _lastUpdated = timestamp;
+    }
+
+    function getOpen() as Lang.Float? {
+        return _open;
+    }
+
+    function setOpen(val as Lang.Float?) as Void {
+        _open = val;
+    }
+
+    function getHigh() as Lang.Float? {
+        return _high;
+    }
+
+    function setHigh(val as Lang.Float?) as Void {
+        _high = val;
+    }
+
+    function getLow() as Lang.Float? {
+        return _low;
+    }
+
+    function setLow(val as Lang.Float?) as Void {
+        _low = val;
+    }
+
+    function getPreviousClose() as Lang.Float? {
+        return _previousClose;
+    }
+
+    function setPreviousClose(val as Lang.Float?) as Void {
+        _previousClose = val;
+    }
+
+    function getFiftyTwoWeekHigh() as Lang.Float? {
+        return _fiftyTwoWeekHigh;
+    }
+
+    function setFiftyTwoWeekHigh(val as Lang.Float?) as Void {
+        _fiftyTwoWeekHigh = val;
+    }
+
+    function getFiftyTwoWeekLow() as Lang.Float? {
+        return _fiftyTwoWeekLow;
+    }
+
+    function setFiftyTwoWeekLow(val as Lang.Float?) as Void {
+        _fiftyTwoWeekLow = val;
     }
 
     function isPositive() as Lang.Boolean {

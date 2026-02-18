@@ -67,12 +67,29 @@ class AlphaVantageProvider {
 
             if (price == null) { return null; }
 
-            return {
+            var result = {
                 "value" => (price as Lang.String).toFloat(),
                 "change" => change != null ? (change as Lang.String).toFloat() : 0.0,
                 "changePercent" => changePercent != null ? parsePercent(changePercent as Lang.String) : 0.0,
                 "timestamp" => System.getTimer()
-            };
+            } as Lang.Dictionary;
+
+            // Extract OHLC data
+            var openVal = gq.get("02. open");
+            if (openVal != null) { result.put("open", (openVal as Lang.String).toFloat()); }
+
+            var highVal = gq.get("03. high");
+            if (highVal != null) { result.put("high", (highVal as Lang.String).toFloat()); }
+
+            var lowVal = gq.get("04. low");
+            if (lowVal != null) { result.put("low", (lowVal as Lang.String).toFloat()); }
+
+            var prevClose = gq.get("08. previous close");
+            if (prevClose != null) { result.put("previousClose", (prevClose as Lang.String).toFloat()); }
+
+            // Alpha Vantage GLOBAL_QUOTE does not provide 52-week data
+
+            return result;
         } catch (ex) {
             return null;
         }
@@ -83,7 +100,8 @@ class AlphaVantageProvider {
         return (cleaned as Lang.String).toFloat();
     }
 
-    function fetchHistory(symbol as Lang.String, callback as Lang.Method) as Void {
+    function fetchHistory(symbol as Lang.String, range as Lang.String, callback as Lang.Method) as Void {
+        // Alpha Vantage free tier too limited (25 calls/day) for history
         callback.invoke([] as Lang.Array);
     }
 

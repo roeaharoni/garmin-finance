@@ -6,12 +6,16 @@ class DataFetcher {
     private var _cache as DataCache;
     private var _pendingSymbol as Lang.String?;
     private var _pendingCallback;
+    private var _pendingHistorySymbol as Lang.String?;
+    private var _pendingHistoryCallback;
 
     function initialize() {
         _provider = ProviderFactory.getProvider();
         _cache = new DataCache();
         _pendingSymbol = null;
         _pendingCallback = null;
+        _pendingHistorySymbol = null;
+        _pendingHistoryCallback = null;
     }
 
     function fetchSymbol(symbol as Lang.String, callback) as Void {
@@ -23,8 +27,7 @@ class DataFetcher {
     function onDataReceived(data as Lang.Dictionary?) as Void {
         if (data != null && _pendingSymbol != null) {
             var sym = _pendingSymbol as Lang.String;
-            var d = data as Lang.Dictionary;
-            _cache.store(sym, d.get("value") as Lang.Float, d.get("change") as Lang.Float);
+            _cache.store(sym, data as Lang.Dictionary);
             System.println("Cached data for " + sym);
             if (_pendingCallback != null) {
                 _pendingCallback.invoke(data);
@@ -34,6 +37,23 @@ class DataFetcher {
             if (_pendingCallback != null) {
                 _pendingCallback.invoke(null);
             }
+        }
+    }
+
+    function fetchHistory(symbol as Lang.String, range as Lang.String, callback) as Void {
+        _pendingHistorySymbol = symbol;
+        _pendingHistoryCallback = callback;
+        _provider.fetchHistory(symbol, range, method(:onHistoryReceived));
+    }
+
+    function onHistoryReceived(data as Lang.Array?) as Void {
+        if (data != null && _pendingHistorySymbol != null && data.size() > 0) {
+            var sym = _pendingHistorySymbol as Lang.String;
+            _cache.storeHistory(sym, data as Lang.Array);
+            System.println("Cached history for " + sym + " (" + data.size() + " points)");
+        }
+        if (_pendingHistoryCallback != null) {
+            _pendingHistoryCallback.invoke(data);
         }
     }
 

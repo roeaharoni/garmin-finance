@@ -15,7 +15,8 @@ class FinanceTrackerApp extends Application.AppBase {
     }
 
     function getInitialView() as [WatchUi.Views] or [WatchUi.Views, WatchUi.InputDelegates] {
-        return [new FinanceTrackerView(), new FinanceTrackerDelegate()];
+        var view = new FinanceTrackerView();
+        return [view, new FinanceTrackerDelegate(view)];
     }
 
 }

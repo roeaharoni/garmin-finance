@@ -3,8 +3,23 @@ using Toybox.Lang;
 
 class DetailDelegate extends WatchUi.BehaviorDelegate {
 
-    function initialize() {
+    private var _view as DetailView;
+
+    function initialize(view as DetailView) {
         BehaviorDelegate.initialize();
+        _view = view;
+    }
+
+    function onNextPage() as Lang.Boolean {
+        _view.toggleMode();
+        WatchUi.requestUpdate();
+        return true;
+    }
+
+    function onPreviousPage() as Lang.Boolean {
+        _view.toggleMode();
+        WatchUi.requestUpdate();
+        return true;
     }
 
     function onBack() as Lang.Boolean {

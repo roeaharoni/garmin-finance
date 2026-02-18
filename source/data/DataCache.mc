@@ -7,14 +7,26 @@ class DataCache {
     function initialize() {
     }
 
-    function store(symbolName as Lang.String, value as Lang.Float, change as Lang.Float) as Void {
+    function store(symbolName as Lang.String, data as Lang.Dictionary) as Void {
         var key = "symbol_" + symbolName;
-        var data = {
-            "value" => value,
-            "change" => change,
+        var cacheData = {
+            "value" => data.get("value"),
+            "change" => data.get("change"),
+            "changePercent" => data.get("changePercent"),
             "timestamp" => System.getTimer()
-        };
-        Storage.setValue(key, data);
+        } as Lang.Dictionary;
+
+        // Store OHLC if available
+        if (data.get("open") != null) { cacheData.put("open", data.get("open")); }
+        if (data.get("high") != null) { cacheData.put("high", data.get("high")); }
+        if (data.get("low") != null) { cacheData.put("low", data.get("low")); }
+        if (data.get("previousClose") != null) { cacheData.put("previousClose", data.get("previousClose")); }
+
+        // Store 52-week if available
+        if (data.get("fiftyTwoWeekHigh") != null) { cacheData.put("fiftyTwoWeekHigh", data.get("fiftyTwoWeekHigh")); }
+        if (data.get("fiftyTwoWeekLow") != null) { cacheData.put("fiftyTwoWeekLow", data.get("fiftyTwoWeekLow")); }
+
+        Storage.setValue(key, cacheData);
     }
 
     function get(symbolName as Lang.String) as Lang.Dictionary? {
