@@ -6,7 +6,10 @@ A Garmin Connect IQ application for tracking currencies, stocks, and crypto pric
 
 - Real-time financial quotes displayed on your watch
 - Up to 4 symbols tracked simultaneously (currencies, stocks, crypto)
-- Change indicators (green/red) showing price movement
+- Change indicators (green/red) showing both nominal and percentage change
+- **Detail view** — tap any symbol to see daily OHLC (Open/High/Low/Close) and a line chart
+- **Daily/Yearly modes** — swipe up/down in detail view to toggle between 30-day and 52-week data
+- Data source and last sync time displayed at bottom of screen
 - Multiple data providers: Twelve Data (default), Alpha Vantage, Yahoo Finance
 - Offline caching via persistent storage
 - Configurable via Garmin Connect Mobile app or simulator settings
@@ -115,16 +118,16 @@ garmin-finance/
 ├── source/
 │   ├── FinanceTrackerApp.mc       # App entry point
 │   ├── FinanceTrackerView.mc      # Main list view + fetch orchestration
-│   ├── FinanceTrackerDelegate.mc  # Input handler
+│   ├── FinanceTrackerDelegate.mc  # Input handler (selection + navigation)
 │   ├── FinanceWidget.mc           # Glance widget
-│   ├── DetailView.mc              # Single symbol detail view
-│   ├── DetailDelegate.mc          # Detail view input handler
+│   ├── DetailView.mc              # Symbol detail: OHLC, chart, daily/yearly
+│   ├── DetailDelegate.mc          # Detail view: mode toggle + back
 │   ├── data/
 │   │   ├── DataFetcher.mc         # Fetch coordinator (bridges view ↔ provider)
 │   │   ├── DataCache.mc           # Persistent storage cache
 │   │   ├── ProviderFactory.mc     # Maps settings to provider instances
 │   │   ├── models/
-│   │   │   ├── Symbol.mc          # FinanceSymbol (name, value, change, error)
+│   │   │   ├── Symbol.mc          # FinanceSymbol (name, value, change, OHLC, 52W)
 │   │   │   ├── Currency.mc        # Currency pair model
 │   │   │   ├── Stock.mc           # Stock model
 │   │   │   └── DataPoint.mc       # Historical data point
@@ -155,12 +158,14 @@ The app follows a layered architecture:
 FinanceTrackerView  →  DataFetcher  →  ProviderFactory  →  Provider (API call)
        ↑                    ↓
    UI rendering         DataCache (persistent storage)
+       │
+       └── DetailView (OHLC + chart, fetches history on demand)
 ```
 
-- **View** reads symbols from settings, creates `DataFetcher`, fetches quotes sequentially
-- **DataFetcher** delegates to the configured provider and caches results
-- **ProviderFactory** reads the `dataProvider` setting and instantiates the right provider
-- **Providers** handle API-specific logic and return normalized `{ value, change, changePercent }` data
+- **Main View** — Lists symbols with price, nominal+percentage change, selection cursor, source/sync info
+- **Detail View** — Shows OHLC or 52-week data with a line chart; toggles daily/yearly with UP/DOWN
+- **DataFetcher** — Delegates to the configured provider, caches results, supports both quote and history fetching
+- **Providers** — Handle API-specific logic and return normalized data (price, change, OHLC, 52-week)
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for full details including the provider interface, networking model, and implementation guide.
 
