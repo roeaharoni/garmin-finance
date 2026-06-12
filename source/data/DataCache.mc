@@ -2,6 +2,7 @@ using Toybox.Application.Storage;
 using Toybox.Lang;
 using Toybox.System;
 
+(:background)
 class DataCache {
 
     function initialize() {

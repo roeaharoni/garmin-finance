@@ -1,6 +1,7 @@
 using Toybox.Lang;
 using Toybox.System;
 
+(:background)
 class DataFetcher {
     private var _provider;
     private var _cache as DataCache;

@@ -3,6 +3,7 @@ using Toybox.Communications;
 using Toybox.System;
 using Toybox.Application;
 
+(:background)
 class TwelveDataProvider {
     private var _callback as Lang.Method?;
     private var _historyCallback as Lang.Method?;

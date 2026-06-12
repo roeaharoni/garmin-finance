@@ -2,6 +2,7 @@ using Toybox.Lang;
 using Toybox.Application;
 using Toybox.System;
 
+(:background)
 class ProviderFactory {
 
     // Maps numeric settings value to provider instance

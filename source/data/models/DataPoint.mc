@@ -1,5 +1,6 @@
 using Toybox.Lang;
 
+(:background)
 class DataPoint {
     private var _timestamp as Lang.Number;
     private var _value as Lang.Float;

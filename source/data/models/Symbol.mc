@@ -8,6 +8,7 @@ class FinanceSymbol {
     private var _changePercent as Lang.Float?;
     private var _lastUpdated as Lang.Number?;
     private var _error as Lang.Boolean = false;
+    private var _stale as Lang.Boolean = false;
 
     // OHLC data
     private var _open as Lang.Float?;
@@ -26,6 +27,7 @@ class FinanceSymbol {
         _changePercent = null;
         _lastUpdated = null;
         _error = false;
+        _stale = false;
         _open = null;
         _high = null;
         _low = null;
@@ -132,5 +134,14 @@ class FinanceSymbol {
 
     function setError(err as Lang.Boolean) as Void {
         _error = err;
+    }
+
+    // True when the displayed values came from cache after a failed refresh.
+    function isStale() as Lang.Boolean {
+        return _stale;
+    }
+
+    function setStale(stale as Lang.Boolean) as Void {
+        _stale = stale;
     }
 }

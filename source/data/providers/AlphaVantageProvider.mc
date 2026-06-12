@@ -3,6 +3,7 @@ using Toybox.Communications;
 using Toybox.System;
 using Toybox.Application;
 
+(:background)
 class AlphaVantageProvider {
     private var _callback as Lang.Method?;
 

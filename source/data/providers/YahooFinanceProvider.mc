@@ -2,6 +2,7 @@ using Toybox.Lang;
 using Toybox.Communications;
 using Toybox.System;
 
+(:background)
 class YahooFinanceProvider {
     private var _callback as Lang.Method?;
     private var _historyCallback as Lang.Method?;

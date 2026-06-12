@@ -77,12 +77,14 @@ class FinanceTrackerView extends WatchUi.View {
         var leftMargin = 15;
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(leftMargin, y, Graphics.FONT_SMALL, symbol.getName(), Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(leftMargin, y, Graphics.FONT_SMALL, SymbolFormatter.prettify(symbol.getName()), Graphics.TEXT_JUSTIFY_LEFT);
 
         var valueY = y + 22;
         if (symbol.getValue() != null) {
             var val = symbol.getValue() as Lang.Float;
             var valueStr = val.format("%.2f");
+            // Dim the price when it's last-known (stale) data after a failed refresh.
+            dc.setColor(symbol.isStale() ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.drawText(leftMargin, valueY, Graphics.FONT_TINY, valueStr, Graphics.TEXT_JUSTIFY_LEFT);
 
             var change = symbol.getChange();
@@ -183,32 +185,49 @@ class FinanceTrackerView extends WatchUi.View {
         var symbol = symbols[_fetchIndex] as FinanceSymbol;
 
         if (data != null) {
-            var d = data as Lang.Dictionary;
-            symbol.setValue(d.get("value") as Lang.Float?);
-            symbol.setChange(d.get("change") as Lang.Float?);
-            symbol.setChangePercent(d.get("changePercent") as Lang.Float?);
-
-            // OHLC data
-            symbol.setOpen(d.get("open") as Lang.Float?);
-            symbol.setHigh(d.get("high") as Lang.Float?);
-            symbol.setLow(d.get("low") as Lang.Float?);
-            symbol.setPreviousClose(d.get("previousClose") as Lang.Float?);
-
-            // 52-week data
-            symbol.setFiftyTwoWeekHigh(d.get("fiftyTwoWeekHigh") as Lang.Float?);
-            symbol.setFiftyTwoWeekLow(d.get("fiftyTwoWeekLow") as Lang.Float?);
+            populateSymbol(symbol, data as Lang.Dictionary);
+            symbol.setError(false);
+            symbol.setStale(false);
 
             // Track sync time
             _lastSyncTime = Time.now().value();
             symbol.setLastUpdated(_lastSyncTime);
         } else {
-            symbol.setError(true);
-            System.println("Fetch failed for " + symbol.getName());
+            // Fetch failed (often Twelve Data rate-limiting). Fall back to the
+            // last successfully cached values instead of showing an error.
+            var cache = new DataCache();
+            var cached = cache.get(symbol.getName());
+            if (cached != null) {
+                populateSymbol(symbol, cached as Lang.Dictionary);
+                symbol.setError(false);
+                symbol.setStale(true);
+                System.println("Using cached data for " + symbol.getName());
+            } else {
+                symbol.setError(true);
+                System.println("Fetch failed, no cache for " + symbol.getName());
+            }
         }
 
         _fetchIndex++;
         WatchUi.requestUpdate();
         fetchNextQuote();
+    }
+
+    // Copies quote fields from a fetched/cached dictionary into the symbol.
+    private function populateSymbol(symbol as FinanceSymbol, d as Lang.Dictionary) as Void {
+        symbol.setValue(d.get("value") as Lang.Float?);
+        symbol.setChange(d.get("change") as Lang.Float?);
+        symbol.setChangePercent(d.get("changePercent") as Lang.Float?);
+
+        // OHLC data
+        symbol.setOpen(d.get("open") as Lang.Float?);
+        symbol.setHigh(d.get("high") as Lang.Float?);
+        symbol.setLow(d.get("low") as Lang.Float?);
+        symbol.setPreviousClose(d.get("previousClose") as Lang.Float?);
+
+        // 52-week data
+        symbol.setFiftyTwoWeekHigh(d.get("fiftyTwoWeekHigh") as Lang.Float?);
+        symbol.setFiftyTwoWeekLow(d.get("fiftyTwoWeekLow") as Lang.Float?);
     }
 
     function getSelectedSymbol() as FinanceSymbol? {
